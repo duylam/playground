@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.26.6
+    container_name: envoy
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./config-transcoder.yaml:/config.yaml:ro"
+      - "../grpc/protos/out/descriptor-set.pb:/descriptor.pb:ro"
+    command: [
+      "--config-path", "/config.yaml",
+      "--log-level", "trace"
+    ]
