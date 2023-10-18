@@ -28,7 +28,7 @@ What to have:
 - The compiled [descriptor](https://protobuf.com/docs/descriptors) file `./protos/out/descriptor-set.pb`
 
 ### Run the gRPC Python server
-t
+
 ```bash
 cd python-app; PORT=6000 /tmp/venv/bin/python greeter_server.py
 ```

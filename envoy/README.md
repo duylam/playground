@@ -18,12 +18,12 @@ What to have:
 You can run the below command for a simple HTTP server on port 6000
 
 ```bash
-while true; do echo -e 'HTTP/1.1 204\r\n'  | nc -l 0.0.0.0 5000; done
+while true; do echo -e 'HTTP/1.1 204\r\n'  | nc -l 0.0.0.0 6000; done
 ```
 
 ### Start proxy to gRPC
 
-1. Compile the protobuf and the gRPC server at `./grpc/README.md` 
+1. Compile the protobuf and start the gRPC server at `../grpc/README.md` 
 2. Run the below command
 
 ```bash

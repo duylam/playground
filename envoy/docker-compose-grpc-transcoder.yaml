@@ -11,5 +11,5 @@ services:
       - "../grpc/protos/out/descriptor-set.pb:/descriptor.pb:ro"
     command: [
       "--config-path", "/config.yaml",
-      "--log-level", "trace"
+      "--log-level", "debug"
     ]
