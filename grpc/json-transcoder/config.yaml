@@ -26,14 +26,28 @@ static_resources:
           http_filters:
           - name: envoy.filters.http.grpc_json_transcoder
             typed_config:
+              # See https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/http/grpc_json_transcoder/v3/transcoder.proto
               "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
               proto_descriptor: "/descriptor.pb"
               services: ["helloworld.Greeter"]
+
+              # Use manual mapping to well control the JSON API contract
+              auto_mapping: false
+
+              # retain Google error object
+              convert_grpc_status: true
+              max_request_body_size: 1048576 # 1MB
+              max_response_body_size: 5242880 # 5MB
+              request_validation_options:
+                reject_unknown_method: true
               print_options:
-                add_whitespace: true
-                always_print_primitive_fields: true
-                always_print_enums_as_ints: false
-                preserve_proto_field_names: false
+                # save bandwidth
+                add_whitespace: false 
+                always_print_primitive_fields: false
+
+                # retain the api contract for grpc
+                always_print_enums_as_ints: true
+                preserve_proto_field_names: true
           - name: envoy.filters.http.router
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -56,5 +70,5 @@ static_resources:
             address:
               socket_address:
                 address: host.docker.internal
-                port_value: 6000
+                port_value: 3020
 

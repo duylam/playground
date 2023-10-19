@@ -21,9 +21,11 @@ import os
 from typing import Iterable
 import time
 from grpc_reflection.v1alpha import reflection
-from grpc_out import helloworld_pb2
-from grpc_out import helloworld_pb2_grpc
+from grpc_out import helloworld_pb2, helloworld_pb2_grpc
 from google.api import httpbody_pb2
+from google.rpc import code_pb2, status_pb2, error_details_pb2
+from google.protobuf import any_pb2
+from grpc_status import rpc_status
 
 
 class Greeter(helloworld_pb2_grpc.GreeterServicer):
@@ -33,6 +35,25 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
             request
         )
         return helloworld_pb2.HelloReply(message="Hello, %s!" % request.name)
+
+        # Return error following Google error standard
+        #detail = any_pb2.Any()
+        #detail.Pack(
+        #    error_details_pb2.ErrorInfo(
+        #        reason="reason1",
+        #        domain="mydomain.com",
+        #        metadata={
+        #            "detail-message": "error message"
+        #        }
+        #    )
+        #)
+        #error_status = status_pb2.Status(
+        #    code=code_pb2.INTERNAL,
+        #    message="Unknown exception",
+        #    details=[detail],
+        #)
+        #context.abort_with_status(rpc_status.to_status(error_status))
+
 
     def SayHelloStreamReply(self, request, context) -> Iterable[helloworld_pb2.HelloReply]:
         logging.debug(
@@ -47,7 +68,7 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
             yield helloworld_pb2.HelloReply(message="Hello, %s!" % i, http=None)
 
 def serve():
-    port = os.getenv("PORT", 6000)
+    port = os.getenv("PORT", 3020)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
 

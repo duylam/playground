@@ -29,15 +29,19 @@ service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {
     option (google.api.http) = {
-      post: "/sayHello",
+      post: "/helloworld.Greater/sayHello",
       body: "*"
     };
   }
 
   rpc SayHelloStreamReply (HelloRequest) returns (stream HelloReply) {
     option (google.api.http) = {
-      post: "/sayHelloStreamReply",
+      post: "/helloworld.Greater/sayHelloStreamReply",
       body: "*",
+      // To specify the arbitrary response body with custom
+      // content-type, use the 'response_body' to map a field
+      // in the response message with HttpBody type to the
+      // resposne body object
       //response_body: "http"
     };
   }

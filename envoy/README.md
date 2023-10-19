@@ -11,29 +11,15 @@ docker compose up
 ```
 
 What to have:
-- An HTTP server at `localhost:3000` which proxies HTTP server at `localhost:6000`
+- An HTTP server at `localhost:3000` which proxies HTTP server at `localhost:3010`
 - Envoy runs with `debug` log level
 - Terminate the command and run again for applying config changes
 
-You can run the below command for a simple HTTP server on port 6000
+You can run the below command for a simple HTTP server on port 3010
 
 ```bash
-while true; do echo -e 'HTTP/1.1 204\r\n'  | nc -l 0.0.0.0 6000; done
+while true; do echo -e 'HTTP/1.1 204\r\n'  | nc -l 0.0.0.0 3010; done
 ```
-
-### Start proxy to gRPC
-
-1. Compile the protobuf and start the gRPC server at `../grpc/README.md` 
-2. Run the below command
-
-```bash
-docker compose -f docker-compose-grpc-transcoder.yaml up
-```
-
-What to have:
-- An HTTP server at `http://localhost:3000/sayHello` which proxies gRPC server at `localhost:6000`
-- Envoy runs with `debug` log level
-- Terminate the command and run again for applying config changes
 
 ### Check help
 

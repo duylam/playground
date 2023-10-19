@@ -1,16 +1,17 @@
 version: '3'
 
 services:
-  envoy:
+  envoy-json-transcoder:
     image: envoyproxy/envoy:v1.26.6
-    container_name: envoy
+    container_name: envoy-json-transcoder
     ports:
       - "3000:3000"
     volumes:
       - "./config.yaml:/config.yaml:ro"
+      - "../protos/out/descriptor-set.pb:/descriptor.pb:ro"
     command: [
       "--config-path", "/config.yaml",
- 
+
       # set to 'validate' for validating the config file and then exit
       "--mode", "serve",
       "--log-level", "debug"
