@@ -1,6 +1,8 @@
-grpcio
-grpcio-reflection
-grpcio-tools
-grpcio-status
-google~=3.0.0
-protobuf
+grpcio==1.59.0
+grpcio-reflection==1.59.0
+grpcio-status==1.59.0
+grpcio-tools==1.59.0
+google==3.0.0
+protobuf==4.24.4
+protoc-gen-validate==1.0.2
+
