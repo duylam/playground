@@ -29,11 +29,26 @@ from grpc_status import rpc_status
 
 
 class Greeter(helloworld_pb2_grpc.GreeterServicer):
+    def print_metadata(self, context):
+        logging.debug("Request metadata (key=value)")
+        for key, value in context.invocation_metadata():
+            logging.debug("* %s=%s" % (key, value))
+
+    def attach_metadata(self, context):
+        context.set_trailing_metadata(
+            (
+                ("x-server-metadata-1", b"hello"),
+                ("x-server-metadata-2", "true")
+            )
+        )
+
     def SayHello(self, request, context):
         logging.debug(
             "Received invocation SayHello(): %s",
             request
         )
+        self.print_metadata(context)
+        self.attach_metadata(context)
         return helloworld_pb2.HelloReply(message="Hello, %s!" % request.name)
 
         # Return error following Google error standard
@@ -60,6 +75,8 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
             "Received invocation SayHelloStreamReply(): %s",
             request
         )
+        self.print_metadata(context)
+        self.attach_metadata(context)
         http_payload = httpbody_pb2.HttpBody()
         http_payload.content_type = "text/plain"
         http_payload.data = bytes("done", 'ascii')

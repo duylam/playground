@@ -53,8 +53,9 @@ What to have:
 To test the transcoder, run
 
 ```bash
-curl -i --http1.1 --location 'http://localhost:3000/helloworld.Greater/sayHelloStreamReply' \
+curl --http1.1 -v -N 'http://localhost:3000/helloworld.Greater/sayHelloStreamReply' \
     --header 'Content-Type: application/json' \
+    --header 'x-my-header: my-value' \
     --data '{
         "name": "hello"
     }'
